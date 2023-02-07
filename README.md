@@ -1,4 +1,4 @@
-# workout-form
+
 # Gym Marketing Form Website Documentation
 ## Overview
 This project is a small marketing form website for a gym, built with Next.js and React.js. The design was crafted with TailwindCSS, and animations were added using Framer-Motion. The form submission is handled with Formik and validated with Yup, and the form data is stored in an array. The submission of the form routes to a new page using useRouter from React.
