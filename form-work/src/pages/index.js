@@ -4,10 +4,18 @@ import Image from "next/image";
 import formImage from '../assets/image.png'
 import  { useFormik } from "formik";
 import * as Yup from 'yup'
+import {  useRouter  } from 'next/router';
+import {motion as m} from 'framer-motion';
 
 export default function Home() {
 
+  //Router
+  const router = useRouter();
+  
   const formik = useFormik({
+    //Formik Logic
+
+
     initialValues: {
       name: '',
       email: '',
@@ -21,26 +29,30 @@ export default function Home() {
       .required('Name is required to submit!'),
       email: Yup.string()
       .email("Invalid Email Address!")
-      .required("Email is require to submit!"),
+      .required("Email is required to submit!"),
       terms: Yup.array().required("Terms of services must be checked"),
     }),
     //Submit Form
     onSubmit: (values) => {
-
+      router.push({pathname: '/successPage', query: values});
       console.log(values)
     }
 
   })
 
   return (
-    <div>
+    <m.div
+    initial={{opacity: 0}}
+    animate={{opacity: 1}}
+    exit={{opacity: 0}}
+    >
       <Head>
         <title>Gym Submission Form!</title>
         <meta name="description" content="Created by Zack Darnell! " />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-        <main className='h-screen flex items-center justify-center'>
+        <main className='h-screen flex items-center justify-center '>
           <form onSubmit={formik.handleSubmit} className='bg-white flex rounded-lg w-1/2'>
               <div className='flex-1 text-gray-700 p-20'>
                 <h1 className='text-3xl pb-2'>Lets get started!</h1>
@@ -50,7 +62,8 @@ export default function Home() {
                   <div className='mt-6 '>
                   {/*Name Input Field*/}
                   <div className='mt-6'>
-                    <label className={`block font-bold text-sm pb-2 ${formik.errors.name ? 'text-red-400' : '' }`} htmlFor='name'>{formik.touched.name && formik.errors.name ? formik.errors.name : 'Name'} </label>
+                    <label className={`block font-bold text-sm pb-2 ${formik.errors.name ? 'text-red-400' : '' }`} 
+                    htmlFor='name'>{formik.touched.name && formik.errors.name ? formik.errors.name : 'Name'} </label>
                     <input
                     value={formik.values.name}
                     onChange={formik.handleChange}
@@ -62,10 +75,12 @@ export default function Home() {
                 <div className='mt-6 '>
                   {/*Email Input Field*/}
                   <div className='mt-6'>
-                    <label className='block font-bold text-sm pb-2' htmlFor='email'>Name </label>
+                  <label className={`block font-bold text-sm pb-2 ${formik.errors.name ? 'text-red-400' : '' }`} 
+                    htmlFor='email'>{formik.touched.email && formik.errors.email ? formik.errors.email : 'Email'} </label>
                     <input 
                     value={formik.values.email}
                     onChange={formik.handleChange} 
+                    onBlur={formik.handleBlur} 
                     className='border-2 border-slate-500 focus:border-yellow-500 focus:ring-yellow-500 rounded-md w-1/2' 
                     type="email" name='email' placeholder='Enter your email!' />
                   </div>
@@ -77,7 +92,7 @@ export default function Home() {
                     <select 
                     value={formik.values.states}
                     onChange={formik.handleChange} 
-                    name="state" className='border-2 border-slate-500 focus:border-yellow-500 focus:ring-yellow-500 rounded-md w-1/2' >
+                    name="states" className='border-2 border-slate-500 focus:border-yellow-500 focus:ring-yellow-500 rounded-md w-1/2' >
                       <option>California</option>
                       <option>Arizona</option>
                       <option>Florida</option>
@@ -90,7 +105,8 @@ export default function Home() {
                 <div className='mt-6 '>
                   {/*Email Input Field*/}
                   <div className='mt-6'>
-                    <label className='block font-bold text-sm pb-2' htmlFor='terms'>Terms of service </label>
+                  <label className={`block font-bold text-sm pb-2 ${formik.errors.terms ? 'text-red-400' : '' }`} 
+                    htmlFor='terms'>{formik.touched.terms && formik.errors.terms ? formik.errors.terms : 'Terms of Service'} </label>
                     <div className='flex items-center gap-2'>
                       <input 
                       onChange={formik.handleChange} 
@@ -113,13 +129,8 @@ export default function Home() {
               className='object-cover'
               src={formImage} />
               </div>
-              <div>
-                <img 
-                
-                />
-              </div>
           </form>
         </main> 
-    </div>
+    </m.div>
   )
 }
